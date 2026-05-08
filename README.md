@@ -56,12 +56,12 @@ All secrets live in `.env.local` (gitignored). The committed
 [.env.example](.env.example) documents every variable. Required for
 Milestone 1.0:
 
-| Variable | Purpose |
-| --- | --- |
-| `DATABASE_URL` | Supabase Postgres pooled connection (port 6543) — used by the app at runtime. |
-| `DIRECT_URL` | Supabase Postgres direct connection (port 5432) — used by Prisma Migrate. |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key (browser-safe). |
-| `CLERK_SECRET_KEY` | Clerk secret key (server-only). |
+| Variable                            | Purpose                                                                       |
+| ----------------------------------- | ----------------------------------------------------------------------------- |
+| `DATABASE_URL`                      | Supabase Postgres pooled connection (port 6543) — used by the app at runtime. |
+| `DIRECT_URL`                        | Supabase Postgres direct connection (port 5432) — used by Prisma Migrate.     |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key (browser-safe).                                         |
+| `CLERK_SECRET_KEY`                  | Clerk secret key (server-only).                                               |
 
 ## Multi-tenancy
 
@@ -72,11 +72,11 @@ This invariant is non-negotiable and is covered by an isolation test in
 
 ## Scripts
 
-| Script | What it does |
-| --- | --- |
-| `npm run dev` | Start the Next.js dev server. |
-| `npm run build` | Production build. |
-| `npm run start` | Run the production build. |
-| `npm run lint` | Run ESLint. |
+| Script          | What it does                  |
+| --------------- | ----------------------------- |
+| `npm run dev`   | Start the Next.js dev server. |
+| `npm run build` | Production build.             |
+| `npm run start` | Run the production build.     |
+| `npm run lint`  | Run ESLint.                   |
 
 Database and test scripts are added in Milestone 1.0 Task 2.
