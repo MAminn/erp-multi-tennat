@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ERP Platform
 
-## Getting Started
+Multi-tenant, bilingual (Arabic / English) SaaS ERP for the Egyptian
+wholesale and manufacturing market.
 
-First, run the development server:
+**Status:** Milestone 1.0 (Foundation Layer) — in progress.
+
+## Stack
+
+- **Framework:** Next.js 14 (App Router) with TypeScript (strict)
+- **Styling:** Tailwind CSS
+- **Database:** PostgreSQL (Supabase)
+- **ORM:** Prisma
+- **Auth:** Clerk
+- **Validation:** Zod
+- **Testing:** Vitest + Testing Library + jsdom
+
+## Getting started
 
 ```bash
+# 1. Install dependencies
+npm install
+
+# 2. Create your local env file and fill it in
+cp .env.example .env.local
+
+# 3. Generate the Prisma client and apply migrations (once the schema exists)
+npm run db:generate
+npm run db:migrate
+
+# 4. Run the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Folder structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+prisma/                 Prisma schema, migrations, seed notes
+src/
+  app/                  Next.js App Router routes, layouts, pages
+  components/           Reusable React components
+    ui/                 Design-system primitives (shadcn/ui later)
+  lib/                  Shared utilities (Prisma client, tenant context, …)
+  server/               Server-only code
+    actions/            Server Actions
+  types/                Shared TypeScript types
+tests/                  Vitest test suite
+docs/                   Project documentation
+```
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+All secrets live in `.env.local` (gitignored). The committed
+[.env.example](.env.example) documents every variable. Required for
+Milestone 1.0:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Supabase Postgres pooled connection (port 6543) — used by the app at runtime. |
+| `DIRECT_URL` | Supabase Postgres direct connection (port 5432) — used by Prisma Migrate. |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key (browser-safe). |
+| `CLERK_SECRET_KEY` | Clerk secret key (server-only). |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Multi-tenancy
 
-## Deploy on Vercel
+Every business-data table carries a `tenantId`. Every server-side data
+access path goes through `getTenantContext()` and filters by `tenantId`.
+This invariant is non-negotiable and is covered by an isolation test in
+`tests/`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Start the Next.js dev server. |
+| `npm run build` | Production build. |
+| `npm run start` | Run the production build. |
+| `npm run lint` | Run ESLint. |
+
+Database and test scripts are added in Milestone 1.0 Task 2.
